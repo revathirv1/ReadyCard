@@ -64,10 +64,16 @@
       const textFromScan2 = targetParams.get('agedata')
       const textFromScan3 = targetParams.get('allergydata')
       const textFromScan4 = targetParams.get('medicationdata')
-      const textFromScan5 = targetParams.get('specialdata');
+      const textFromScan5 = targetParams.get('dietarydata')
+      const textFromScan6 = targetParams.get('specialdata');
       
       if (textFromScan) {
-        document.getElementById('qrData').innerText = decodeURIComponent(textFromScan,textFromScan2,textFromScan3,textFromScan4,textFromScan5);
+        document.getElementById('qrData').innerText = decodeURIComponent(namedata) + " _ "
+        decodeURIComponent(agedata) + " _ "
+        decodeURIComponent(allergydata) + " _ "
+        decodeURIComponent(medicationdata) + " _ "
+        decodeURIComponent(dietarydata) + " _ "
+        decodeURIComponent(specialdata);
       }
     };
   </script>
