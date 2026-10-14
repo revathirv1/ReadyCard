@@ -58,22 +58,24 @@
     }
 
    
-    window.onload = function() {
-      const targetParams = new URLSearchParams(window.location.search);
-      const textFromScan = targetParams.get('namedata')
-      const textFromScan2 = targetParams.get('agedata')
-      const textFromScan3 = targetParams.get('allergydata')
-      const textFromScan4 = targetParams.get('medicationdata')
-      const textFromScan5 = targetParams.get('dietarydata')
-      const textFromScan6 = targetParams.get('specialdata');
-      
-      if (textFromScan) {
-        document.getElementById('qrData').innerText = decodeURIComponent(namedata) + " _ "
-        decodeURIComponent(agedata) + " _ "
-        decodeURIComponent(allergydata) + " _ "
-        decodeURIComponent(medicationdata) + " _ "
-        decodeURIComponent(dietarydata) + " _ "
-        decodeURIComponent(specialdata);
+   window.onload = function() {
+  const targetParams = new URLSearchParams(window.location.search);
+  const textFromScan = targetParams.get('namedata');
+  const textFromScan2 = targetParams.get('agedata');
+  const textFromScan3 = targetParams.get('allergydata');
+  const textFromScan4 = targetParams.get('medicationdata');
+  const textFromScan5 = targetParams.get('dietarydata');
+  const textFromScan6 = targetParams.get('specialdata');
+  
+  
+  if (textFromScan) {
+    document.getElementById('qrData').innerText = 
+      decodeURIComponent(textFromScan) + " _ " +
+      decodeURIComponent(textFromScan2) + " _ " +
+      decodeURIComponent(textFromScan3) + " _ " +
+      decodeURIComponent(textFromScan4) + " _ " +
+      decodeURIComponent(textFromScan5) + " _ " +
+      decodeURIComponent(textFromScan6);
       }
     };
   </script>
