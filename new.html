@@ -1,1 +1,23 @@
-hello
+<script>
+window.onload = function() {
+  const targetParams = new URLSearchParams(window.location.search);
+  const textFromScan = targetParams.get('namedata');
+  const textFromScan2 = targetParams.get('agedata');
+  const textFromScan3 = targetParams.get('allergydata');
+  const textFromScan4 = targetParams.get('medicationdata');
+  const textFromScan5 = targetParams.get('dietarydata');
+  const textFromScan6 = targetParams.get('specialdata');
+  
+  
+  if (textFromScan) {
+    document.getElementById('qrData').innerText = 
+      decodeURIComponent(textFromScan) + ", " +
+      decodeURIComponent(textFromScan2) + ", " +
+      decodeURIComponent(textFromScan3) + ", " +
+      decodeURIComponent(textFromScan4) + ", " +
+      decodeURIComponent(textFromScan5) + ", " +
+      decodeURIComponent(textFromScan6);
+      }
+    };
+
+</script>
