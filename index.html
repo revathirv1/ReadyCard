@@ -6,15 +6,24 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 
-<body style="font-family: system-ui, -apple-system, sans-serif; text-align: center; margin-top: 50px; background-color: #007AFF;">
+<body style="font-family: system-ui, -apple-system, sans-serif; text-align: center; margin-top: 50px; background-color: #007AFF;display: flex;
+  flex-direction: column;
+  gap: 15px;">
 <center>
   
   <h1 style="font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 400; color:white;">
     Welcome to FaceCard
   </h1>
+  <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 300px;">
+    <input type="text" id="text" placeholder="what is their name">
+    <input type="text" id="text1" placeholder="what is their age">
+    <input type="text" id="text2" placeholder="what allergies do they have? ">
+    <input type="text" id="text3" placeholder="what OTC/medications do they need">
+    <input type="text" id="text4" placeholder="what dietary restrictiosn do they">
+    <input type="text" id="text5" placeholder="special guidelines">
+    <button onclick="generateQR()" style="height: 30px;" >Generate Qr Code</button>
+  </div>
   
-  <input type="text" id="text" placeholder="enter Medical Info">
-  <button onclick="generateQR()">keep info to </button>
   
   
   <div id="qrcode" style="margin-top:20px;"></div>
@@ -27,7 +36,12 @@
   <script>
   
     function generateQR() {
-      const text = document.getElementById("text").value;
+      const text = document.getElementById("text").value
+      const text1 = document.getElementById("text1").value
+      const text2 = document.getElementById("text2").value
+      const text3 = document.getElementById("text3").value
+      const text4 = document.getElementById("text4").value
+      const text5 = document.getElementById("text5").value;
 
       if (!text) {
         alert("Please enter text or URL or both");
@@ -37,7 +51,7 @@
       document.getElementById("qrcode").innerHTML = "";
       
       new QRCode(document.getElementById("qrcode"), {
-        text: `https://revathirv1.github.io/x/?Qrdata=${encodeURIComponent(text)}`,
+        text: `https://revathirv1.github.io/x/?namedata=${encodeURIComponent(text)}&agedata=${encodeURIComponent(text1)}&allergydata=${encodeURIComponent(text2)}&medicationdata=${encodeURIComponent(text3)}&dietarydata=${encodeURIComponent(text4)}&specialdata=${encodeURIComponent(text5)}`,
         width: 200,
         height: 200
       });
@@ -46,10 +60,14 @@
    
     window.onload = function() {
       const targetParams = new URLSearchParams(window.location.search);
-      const textFromScan = targetParams.get('Qrdata');
+      const textFromScan = targetParams.get('namedata')
+      const textFromScan2 = targetParams.get('agedata')
+      const textFromScan3 = targetParams.get('allergydata')
+      const textFromScan4 = targetParams.get('medicationdata')
+      const textFromScan5 = targetParams.get('specialdata');
       
       if (textFromScan) {
-        document.getElementById('qrData').innerText = decodeURIComponent(textFromScan);
+        document.getElementById('qrData').innerText = decodeURIComponent(textFromScan,textFromScan2,textFromScan3,textFromScan4,textFromScan5);
       }
     };
   </script>
