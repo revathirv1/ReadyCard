@@ -69,13 +69,14 @@
   
   
   if (textFromScan) {
-    document.getElementById('qrData').innerText = 
-      decodeURIComponent(textFromScan) + ", " +
-      decodeURIComponent(textFromScan2) + ", " +
-      decodeURIComponent(textFromScan3) + ", " +
-      decodeURIComponent(textFromScan4) + ", " +
-      decodeURIComponent(textFromScan5) + ", " +
-      decodeURIComponent(textFromScan6);
+    document.getElementById('qrData').innerHTML = 
+      
+     "Name:  " +decodeURIComponent(textFromScan)  + '<br>' + '<br>' +
+      "Age:  "+decodeURIComponent(textFromScan2) + '<br>' +
+      "Allergies:  "+decodeURIComponent(textFromScan3) + '<br>' +
+      "Medications/OTC:  "+decodeURIComponent(textFromScan4) + '<br>' +
+      "Dietary Restrictions:  "+decodeURIComponent(textFromScan5) + '<br>' +
+      "Special information:  "+decodeURIComponent(textFromScan6);
       }
     };
   </script>
