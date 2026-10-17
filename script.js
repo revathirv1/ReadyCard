@@ -37,7 +37,7 @@ function generateQR() {
     document.getElementById('qrData').innerHTML = 
       
      "Name:  " +decodeURIComponent(textFromScan)  + '<br>' + '<br>' +
-      "Age:  "+decodeURIComponent(textFromScan2) + '<br>' + '<br>'
+      "Age:  "+decodeURIComponent(textFromScan2) + '<br>' + '<br>'+
       "Allergies:  "+decodeURIComponent(textFromScan3) + '<br>' +
       "Medications/OTC:  "+decodeURIComponent(textFromScan4) + '<br>' +
       "Dietary Restrictions:  "+decodeURIComponent(textFromScan5) + '<br>' +

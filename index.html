@@ -106,7 +106,7 @@
         <input id="text1" name="age" type="number" min="0" max="100" >
 
         <label for="dietary">dietary restrictions</label>
-        <input id="text4" name="dr" type="date">
+        <input id="text4" name="dr" type="text">
 
         <label for="allergies">Allergies</label>
         <textarea id="text2" name="allergies" maxlength="500"></textarea>
@@ -120,7 +120,7 @@
         <label for="preferred-hospital">Preferred hospital</label>
         <input id="text6" name="preferred_hospital" maxlength="120">
 
-        <button type="submit" onclick="generateQR()">Create health card</button>
+        <button type="button" onclick="generateQR()">Create health card</button>
 
         <div id="qrcode" style="margin-top:20px;"></div>
        
@@ -129,7 +129,6 @@
       <section id="health-card" aria-live="polite" hidden>
         <h2 id="card-title"></h2>
         <div id="card-details"></div>
-        <div id="qrcode" aria-label="QR code containing the child's health information"></div>
         <p id="qr-status" role="status"></p>
         <p>Anyone who scans this code can read the health details it contains.</p>
       </section>
