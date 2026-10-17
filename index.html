@@ -1,92 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Welcome to FaceCard</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-</head>
-
-<body style="font-family: system-ui, -apple-system, sans-serif; text-align: center; margin-top: 50px; background-color: #007AFF;display: flex;
-  flex-direction: column;
-  gap: 15px;">
-<center>
-  
-  <h1 style="font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 400; color:white;">
-    Welcome to FaceCard
-  </h1>
-  <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 300px;">
-    <input type="text" id="text" placeholder="what is their name">
-    <input type="text" id="text1" placeholder="what is their age">
-    <input type="text" id="text2" placeholder="what allergies do they have? ">
-    <input type="text" id="text3" placeholder="what OTC/medications do they need">
-    <input type="text" id="text4" placeholder="what dietary restrictiosn do they">
-    <input type="text" id="text5" placeholder="special guidelines">
-    <button onclick="generateQR()" style="height: 30px;" >Generate Qr Code</button>
-  </div>
-  
-  
-  
-  <div id="qrcode" style="margin-top:20px;"></div>
-
- 
-  <p id="qrData" style="margin-top: 100px; color:white; font-size: 22px;"> 
-    waiting for QR Scan
-  </p>
-
-  <script>
-  
-    function generateQR() {
-      const text = document.getElementById("text").value
-      const text1 = document.getElementById("text1").value
-      const text2 = document.getElementById("text2").value
-      const text3 = document.getElementById("text3").value
-      const text4 = document.getElementById("text4").value
-      const text5 = document.getElementById("text5").value;
-
-      if (!text) {
-        alert("Please enter text or URL or both");
-        return;
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+    <script src="script.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child Health Card</title>
+    <style>
+      body {
+        box-sizing: border-box;
+        min-height: 100vh;
+        margin: 0;
+        padding: 24px;
+        display: grid;
+        place-items: center;
+        background: conic-gradient(  #f9844a, )
+        color: #202124;
+        font-family: Arial, sans-serif;
       }
 
-      document.getElementById("qrcode").innerHTML = "";
-      
-      new QRCode(document.getElementById("qrcode"), {
-        text: `https://revathirv1.github.io/x/?namedata=${encodeURIComponent(text)}&agedata=${encodeURIComponent(text1)}&allergydata=${encodeURIComponent(text2)}&medicationdata=${encodeURIComponent(text3)}&dietarydata=${encodeURIComponent(text4)}&specialdata=${encodeURIComponent(text5)}`,
-        width: 200,
-        height: 200
-      });
-    }
-
-   
-   window.onload = function() {
-  const targetParams = new URLSearchParams(window.location.search);
-  const textFromScan = targetParams.get('namedata');
-  const textFromScan2 = targetParams.get('agedata');
-  const textFromScan3 = targetParams.get('allergydata');
-  const textFromScan4 = targetParams.get('medicationdata');
-  const textFromScan5 = targetParams.get('dietarydata');
-  const textFromScan6 = targetParams.get('specialdata');
-  
-  
-  if (textFromScan) {
-    document.getElementById('qrData').innerHTML = 
-      
-     "Name:  " +decodeURIComponent(textFromScan)  + '<br>' + '<br>' +
-      "Age:  "+decodeURIComponent(textFromScan2) + '<br>' +
-      "Allergies:  "+decodeURIComponent(textFromScan3) + '<br>' +
-      "Medications/OTC:  "+decodeURIComponent(textFromScan4) + '<br>' +
-      "Dietary Restrictions:  "+decodeURIComponent(textFromScan5) + '<br>' +
-      "Special information:  "+decodeURIComponent(textFromScan6);
+      main {
+        width: min(100%, 440px);
+        box-sizing: border-box;
+        padding: 28px;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 18px 45px rgba(67, 40, 16, 0.2);
       }
-    };
-  </script>
 
+      h1 {
+        margin-top: 0;
+      }
 
-  <p style="color: white; margin-top: 150px; font-size: 14px; opacity: 0.8; max-width: 500px; line-height: 1.5; margin-left: auto; margin-right: auto;">
-    FaceCard is a serverless, end-to-end encrypted PWA that uses qr codes to store important medical information to help quickly remedy medical emergencies
-  </p>
+      label {
+        display: block;
+        margin: 16px 0 6px;
+        font-weight: 600;
+      }
 
-</center>
-</body>
-</html>
+      input,
+      textarea {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #b8bec7;
+        border-radius: 8px;
+        font: inherit;
+      }
 
+      textarea {
+        min-height: 88px;
+        resize: vertical;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 11px 16px;
+        border: 0;
+        border-radius: 8px;
+        background: #244f73;
+        color: #fff;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #183b59;
+      }
+
+      #health-card {
+        margin-top: 24px;
+        overflow-wrap: anywhere;
+      }
+
+      #qrcode {
+        margin-top: 16px;
+      }
+
+      #expiry-reminders {
+        padding: 0 28px;
+        border-radius: 12px;
+        background: #fff4d6;
+      }
+    
+
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Child Health Card</h1>
+      <p>Enter one child's details to create a scannable health-information QR code.</p>
+      <section id="expiry-reminders" aria-live="polite"></section>
+
+      <form id="health-form">
+        <label for="childname">Child's name</label>
+        <input id="text" name="name" maxlength="100" required>
+
+        <label for="expirydate">Health information expiry date</label>
+        <input id="maybe" name="expiry_date" type="date">
+
+        
+
+        <label for="age">Age</label>
+        <input id="text1" name="age" type="number" min="0" max="100" >
+
+        <label for="dietary">dietary restrictions</label>
+        <input id="text4" name="dr" type="date">
+
+        <label for="allergies">Allergies</label>
+        <textarea id="text2" name="allergies" maxlength="500"></textarea>
+
+        <label for="Medicine/OTC">Medicine instructions (as advised by a healthcare professional)</label>
+        <textarea id="text3" name="Medicine" maxlength="500"></textarea>
+
+        <label for="emergencycontact">Emergency contact</label>
+        <input id="text5" name="emergency_contact" maxlength="120">
+
+        <label for="preferred-hospital">Preferred hospital</label>
+        <input id="text6" name="preferred_hospital" maxlength="120">
+
+        <button type="submit" onclick="generateQR()">Create health card</button>
+       
+      </form>
+
+      <section id="health-card" aria-live="polite" hidden>
+        <h2 id="card-title"></h2>
+        <div id="card-details"></div>
+        <div id="qrcode" aria-label="QR code containing the child's health information"></div>
+        <p id="qr-status" role="status"></p>
+        <p>Anyone who scans this code can read the health details it contains.</p>
+      </section>
+                
+    </main>
+    
+    
+    

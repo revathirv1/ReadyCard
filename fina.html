@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to FaceCard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body style="font-family: system-ui, -apple-system, sans-serif; text-align: center; margin-top: 50px; background-color: #007AFF;display: flex;
+  flex-direction: column;
+  gap: 15px;">
+<center>
+  
+  <h1 style="font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 400; color:white;">
+    Welcome to FaceCard
+  </h1>
+  <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 300px;">
+    <input type="text" id="text" placeholder="what is their name">
+    <input type="text" id="text1" placeholder="what is their age">
+    <input type="text" id="text2" placeholder="what allergies do they have? ">
+    <input type="text" id="text3" placeholder="what OTC/medications do they need">
+    <input type="text" id="text4" placeholder="what dietary restrictiosn do they">
+    <input type="text" id="text5" placeholder="special guidelines">
+    <button onclick="generateQR()" style="height: 30px;" >Generate Qr Code</button>
+  </div>
+  
+  
+  
+  <div id="qrcode" style="margin-top:20px;"></div>
+
+ 
+  <p id="qrData" style="margin-top: 100px; color:white; font-size: 22px;"> 
+    waiting for QR Scan
+  </p>
+
+  <script>
+  
+    function generateQR() {
+      const text = document.getElementById("text").value
+      const text1 = document.getElementById("text1").value
+      const text2 = document.getElementById("text2").value
+      const text3 = document.getElementById("text3").value
+      const text4 = document.getElementById("text4").value
+      const text5 = document.getElementById("text5").value;
+
+      if (!text) {
+        alert("Please enter text or URL or both");
+        return;
+      }
+
+      document.getElementById("qrcode").innerHTML = "";
+      
+      new QRCode(document.getElementById("qrcode"), {
+        text: `https://revathirv1.github.io/x/?namedata=${encodeURIComponent(text)}&agedata=${encodeURIComponent(text1)}&allergydata=${encodeURIComponent(text2)}&medicationdata=${encodeURIComponent(text3)}&dietarydata=${encodeURIComponent(text4)}&specialdata=${encodeURIComponent(text5)}`,
+        width: 200,
+        height: 200
+      });
+    }
+
+   
+   window.onload = function() {
+  const targetParams = new URLSearchParams(window.location.search);
+  const textFromScan = targetParams.get('namedata');
+  const textFromScan2 = targetParams.get('agedata');
+  const textFromScan3 = targetParams.get('allergydata');
+  const textFromScan4 = targetParams.get('medicationdata');
+  const textFromScan5 = targetParams.get('dietarydata');
+  const textFromScan6 = targetParams.get('specialdata');
+  
+  
+  if (textFromScan) {
+    document.getElementById('qrData').innerHTML = 
+      
+     "Name:  " +decodeURIComponent(textFromScan)  + '<br>' + '<br>' +
+      "Age:  "+decodeURIComponent(textFromScan2) + '<br>' +
+      "Allergies:  "+decodeURIComponent(textFromScan3) + '<br>' +
+      "Medications/OTC:  "+decodeURIComponent(textFromScan4) + '<br>' +
+      "Dietary Restrictions:  "+decodeURIComponent(textFromScan5) + '<br>' +
+      "Special information:  "+decodeURIComponent(textFromScan6);
+      }
+    };
+  </script>
+
+
+  <p style="color: white; margin-top: 150px; font-size: 14px; opacity: 0.8; max-width: 500px; line-height: 1.5; margin-left: auto; margin-right: auto;">
+    FaceCard is a serverless, end-to-end encrypted PWA that uses qr codes to store important medical information to help quickly remedy medical emergencies
+  </p>
+
+</center>
+</body>
+</html>
+
