@@ -7,6 +7,19 @@ function generateQR() {
     const text5 = document.getElementById("text5").value;
     const text6 = document.getElementById("text6").value;
 
+    if (!text) { 
+        alert("Please enter text or URL or both"); 
+        return; 
+    } 
+
+    document.getElementById("qrcode").innerHTML = ""; 
+
+    new QRCode(document.getElementById("qrcode"), { 
+        text: `https://revathirv1.github.io/x/?namedata=${encodeURIComponent(text)}&agedata=${encodeURIComponent(text1)}&allergydata=${encodeURIComponent(text2)}&medicationdata=${encodeURIComponent(text3)}&dietarydata=${encodeURIComponent(text4)}&specialdata=${encodeURIComponent(text5)}&specialdata2=${encodeURIComponent(text6)}`, 
+        width: 200, 
+        height: 200 
+    }); 
+    document.getElementById("qrcode").insertAdjacentHTML('beforeend', "<br>" + text);
     const error = document.getElementById("form-error");
     if (!text.trim()) {
         error.textContent = "Please enter the child's name.";
@@ -106,18 +119,31 @@ async function shareLink() {
   const textFromScan7 = targetParams.get('specialdata2')
   
   
-  if (textFromScan) {
-    document.getElementById('qrData').innerHTML = 
-      
-     "Name:  " +decodeURIComponent(textFromScan)  + '<br>' + '<br>' +
-      "Age:  "+decodeURIComponent(textFromScan2) + '<br>' + '<br>'+
-      "Allergies:  "+decodeURIComponent(textFromScan3) + '<br>' +
-      "Medications/OTC:  "+decodeURIComponent(textFromScan4) + '<br>' +
-      "Dietary Restrictions:  "+decodeURIComponent(textFromScan5) + '<br>' +
-      "Emergency Contact:  "+decodeURIComponent(textFromScan6) + '<br>' +
-      "Preferred Hospital:  "+decodeURIComponent(textFromScan7)
-      }
-    };
+  if (textFromScan !== null) {
+    const fields = [
+      ["Name", textFromScan],
+      ["Age", textFromScan2],
+      ["Allergies", textFromScan3],
+      ["Medications/OTC", textFromScan4],
+      ["Dietary Restrictions", textFromScan5],
+      ["Emergency Contact", textFromScan6],
+      ["Preferred Hospital", textFromScan7]
+    ];
+    const details = document.getElementById("card-details");
+
+    fields.forEach(([label, value]) => {
+      if (value === null || value === "") return;
+      const row = document.createElement("p");
+      const heading = document.createElement("strong");
+      heading.textContent = `${label}: `;
+      row.append(heading, document.createTextNode(value));
+      details.appendChild(row);
+    });
+
+    document.body.classList.add("scanned-view");
+    document.getElementById("health-card").hidden = false;
+  }
+};
 
 
 
