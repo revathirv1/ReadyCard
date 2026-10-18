@@ -19,7 +19,7 @@ function generateQR() {
         width: 200, 
         height: 200 
     }); 
-    document.getElementById("qrcode").insertAdjacentHTML('beforeend', "<br>" + text);
+    document.getElementById("        qrcode").insertAdjacentHTML('beforeend', "<br>" + text);
 }
 
 
