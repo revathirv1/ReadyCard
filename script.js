@@ -18,7 +18,7 @@ function generateQR() {
         text: `https://revathirv1.github.io/x/?namedata=${encodeURIComponent(text)}&agedata=${encodeURIComponent(text1)}&allergydata=${encodeURIComponent(text2)}&medicationdata=${encodeURIComponent(text3)}&dietarydata=${encodeURIComponent(text4)}&specialdata=${encodeURIComponent(text5)}&specialdata2=${encodeURIComponent(text6)}`, 
         width: 200, 
         height: 200 
-    }); 
+    })+ "br" + text; 
 }
 
 
