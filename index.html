@@ -26,6 +26,7 @@
 
       main {
         width: min(100%, 440px);
+        max-width: 100%;
         min-width: 0;
         padding: 28px;
         border-radius: 20px;
@@ -52,6 +53,7 @@
         border: 1px solid #b8bec7;
         border-radius: 8px;
         font: inherit;
+        font-size: 16px;
       }
 
       textarea {
@@ -89,6 +91,13 @@
       #qrcode {
         margin-top: 16px;
         max-width: 100%;
+      }
+
+      #qrcode canvas,
+      #qrcode img {
+        display: block;
+        max-width: 100%;
+        height: auto;
       }
 
       #expiry-reminders {
