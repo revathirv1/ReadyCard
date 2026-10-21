@@ -1,367 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-    <script src="script.js" defer></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Child Health Card</title>
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Child Health Card</title>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      color: #202124;
+      font-family: Arial, sans-serif;
+    }
+
+    main {
+      width: min(100%, 440px);
+      max-width: 100%;
+      min-width: 0;
+      padding: 28px;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 18px 45px rgba(67, 40, 16, 0.2);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 6px;
+      font-weight: 600;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #b8bec7;
+      border-radius: 8px;
+      font: inherit;
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 20px;
+      min-height: 48px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 8px;
+      background: #244f73;
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #183b59;
+    }
+
+    #form-error {
+      margin: 8px 0 0;
+      color: #c5221f;
+      font-weight: 600;
+    }
+
+    #form-error:empty {
+      display: none;
+    }
+
+    #share-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #share-button[hidden],
+    .share-app[hidden] {
+      display: none;
+    }
+
+    #share-sheet {
+      width: min(100% - 32px, 420px);
+      box-sizing: border-box;
+      padding: 20px;
+      border: 0;
+      border-radius: 16px;
+      color: #202124;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+    }
+
+    #share-sheet::backdrop {
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    @media (max-width: 600px) {
+      #share-sheet {
+        width: 100%;
+        max-width: none;
+        margin: auto 0 0;
+        border-radius: 16px 16px 0 0;
+      }
+    }
+
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sheet-header h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    #share-sheet .close-button {
+      margin: 0;
+      padding: 6px;
+      background: transparent;
+      color: #5f6368;
+      line-height: 0;
+    }
+
+    #share-sheet .close-button:hover {
+      background: #f1f3f4;
+    }
+
+    .share-apps {
+      display: flex;
+      gap: 16px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    .share-app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-width: 64px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #202124;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 400;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .share-app:hover {
+      background: transparent;
+    }
+
+    .share-icon {
+      display: grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      color: #fff;
+    }
+
+    .share-app:hover .share-icon {
+      filter: brightness(0.92);
+    }
+
+    .link-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 6px 6px 12px;
+      border: 1px solid #dadce0;
+      border-radius: 10px;
+      background: #f8f9fa;
+    }
+
+    .link-box input {
+      flex: 1;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #5f6368;
+    }
+
+    .link-box button {
+      flex: 0 0 auto;
+      width: auto;
+      margin: 0;
+      padding: 8px 16px;
+      border-radius: 999px;
+    }
+
+    #share-status {
+      min-height: 1.2em;
+      margin: 10px 0 0;
+      font-size: 0.85rem;
+      color: #188038;
+    }
+
+    #health-card {
+      margin-top: 24px;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    #qrData {
+      overflow-wrap: anywhere;
+    }
+
+    #card-details p {
+      margin: 12px 0;
+    }
+
+    body.scanned-view main > p,
+    body.scanned-view #expiry-reminders,
+    body.scanned-view #entry-form,
+    body.scanned-view #share-button,
+    body.scanned-view #share-sheet,
+    body.scanned-view #qrcode,
+    body.scanned-view #qrData {
+      display: none;
+    }
+
+    body.scanned-view #health-card {
+      display: block;
+    }
+
+    #qrcode {
+      margin-top: 16px;
+      max-width: 100%;
+    }
+
+    #qrcode canvas,
+    #qrcode img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    #expiry-reminders {
+      max-width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: #fff4d6;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 480px) {
       body {
-        min-height: 100vh;
-        margin: 0;
-        padding: 24px;
-        display: grid;
-        place-items: center;
-        background: #fff;
-        color: #202124;
-        font-family: Arial, sans-serif;
+        padding: 12px;
       }
 
       main {
-        width: min(100%, 440px);
-        max-width: 100%;
-        min-width: 0;
-        padding: 28px;
-        border-radius: 20px;
-        background: #fff;
-        box-shadow: 0 18px 45px rgba(67, 40, 16, 0.2);
-      }
-
-      h1 {
-        margin-top: 0;
-      }
-
-      label {
-        display: block;
-        margin: 16px 0 6px;
-        font-weight: 600;
-      }
-
-      input,
-      textarea {
-        width: 100%;
-        min-width: 0;
-        min-height: 44px;
-        padding: 10px 12px;
-        border: 1px solid #b8bec7;
-        border-radius: 8px;
-        font: inherit;
-        font-size: 16px;
-      }
-
-      textarea {
-        min-height: 88px;
-        resize: vertical;
+        padding: 20px;
+        border-radius: 16px;
       }
 
       button {
-        margin-top: 20px;
-        min-height: 48px;
-        padding: 12px 18px;
-        border: 0;
-        border-radius: 8px;
-        background: #244f73;
-        color: #fff;
-        font: inherit;
-        font-weight: 700;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background: #183b59;
-      }
-
-      #form-error {
-        margin: 8px 0 0;
-        color: #c5221f;
-        font-weight: 600;
-      }
-
-      #form-error:empty {
-        display: none;
-      }
-
-      #share-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      #share-button[hidden] {
-        display: none;
-      }
-
-      #share-sheet {
-        width: min(100% - 32px, 420px);
-        box-sizing: border-box;
-        padding: 20px;
-        border: 0;
-        border-radius: 16px;
-        color: #202124;
-        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
-      }
-
-      #share-sheet::backdrop {
-        background: rgba(0, 0, 0, 0.45);
-      }
-
-      /* On phones, slide up from the bottom like a native share sheet. */
-      @media (max-width: 600px) {
-        #share-sheet {
-          width: 100%;
-          max-width: none;
-          margin: auto 0 0;
-          border-radius: 16px 16px 0 0;
-        }
-      }
-
-      .sheet-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .sheet-header h2 {
-        margin: 0;
-        font-size: 1.15rem;
-      }
-
-      #share-sheet .close-button {
-        margin: 0;
-        padding: 6px;
-        background: transparent;
-        color: #5f6368;
-        line-height: 0;
-      }
-
-      #share-sheet .close-button:hover {
-        background: #f1f3f4;
-      }
-
-      .share-apps {
-        display: flex;
-        gap: 16px;
-        margin: 20px 0;
-        overflow-x: auto;
-      }
-
-      .share-app {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 6px;
-        min-width: 64px;
-        margin: 0;
-        padding: 0;
-        border: 0;
-        background: transparent;
-        color: #202124;
-        font: inherit;
-        font-size: 0.8rem;
-        font-weight: 400;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      .share-app:hover {
-        background: transparent;
-      }
-
-      .share-app[hidden] {
-        display: none;
-      }
-
-      .share-icon {
-        display: grid;
-        place-items: center;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        color: #fff;
-      }
-
-      .share-app:hover .share-icon {
-        filter: brightness(0.92);
-      }
-
-      .link-box {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 6px 6px 12px;
-        border: 1px solid #dadce0;
-        border-radius: 10px;
-        background: #f8f9fa;
-      }
-
-      .link-box input {
-        flex: 1;
-        min-width: 0;
-        padding: 0;
-        border: 0;
-        background: transparent;
-        color: #5f6368;
+        width: 100%;
       }
 
       .link-box button {
-        margin: 0;
-        padding: 8px 16px;
-        border-radius: 999px;
+        width: auto;
       }
+    }
+  </style>
+</head>
 
-      #share-status {
-        min-height: 1.2em;
-        margin: 10px 0 0;
-        font-size: 0.85rem;
-        color: #188038;
-      }
+<body>
+  <main>
+    <h1>Child Health Card</h1>
+    <p>Enter one child's details to create a scannable health-information QR code.</p>
 
-      #health-card {
-        margin-top: 24px;
-        min-width: 0;
-        overflow-wrap: anywhere;
-      }
+    <section id="expiry-reminders" aria-live="polite"></section>
 
-      #qrData {
-        overflow-wrap: anywhere;
-      }
+    <div id="entry-form">
+      <label for="text">Child's name</label>
+      <input id="text" name="name" type="text" maxlength="100" required>
 
-      #card-details p {
-        margin: 12px 0;
-      }
+      <label for="text1">Age</label>
+      <input id="text1" name="age" type="number" min="0" max="100">
 
-      body.scanned-view main > p,
-      body.scanned-view #expiry-reminders,
-      body.scanned-view #entry-form,
-      body.scanned-view #qrcode,
-      body.scanned-view #qrData {
-        display: none;
-      }
+      <label for="text4">Dietary restrictions</label>
+      <input id="text4" name="dr" type="text">
 
-      body.scanned-view #health-card {
-        display: block;
-      }
+      <label for="text2">Allergies</label>
+      <textarea id="text2" name="allergies" maxlength="500"></textarea>
 
-      #qrcode {
-        margin-top: 16px;
-        max-width: 100%;
-      }
+      <label for="text3">Medicine instructions (as advised by a healthcare professional)</label>
+      <textarea id="text3" name="Medicine" maxlength="500"></textarea>
 
-      #qrcode canvas,
-      #qrcode img {
-        display: block;
-        max-width: 100%;
-        height: auto;
-      }
+      <label for="text5">Emergency contact</label>
+      <input id="text5" name="emergency_contact" type="tel" maxlength="120">
 
-      #expiry-reminders {
-        max-width: 100%;
-        padding: 12px 16px;
-        border-radius: 12px;
-        background: #fff4d6;
-      }
+      <label for="text6">Preferred hospital</label>
+      <input id="text6" name="preferred_hospital" type="text" maxlength="120">
 
-      @media (max-width: 480px) {
-        body {
-          padding: 12px;
-        }
+      <button type="button" onclick="generateQR()">Create health card</button>
+      <p id="form-error" role="alert"></p>
+      <div id="qrcode"></div>
+    </div>
 
-        main {
-          padding: 20px;
-          border-radius: 16px;
-        }
+    <button type="button" id="share-button" onclick="openShareSheet()" hidden>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M14 9V5l7 7-7 7v-4.1c-5 0-8.5 1.6-11 5.1 1-5 4-10 11-11z"/>
+      </svg>
+      Share
+    </button>
 
-        button {
-          width: 100%;
-        }
-      }
-
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>Child Health Card</h1>
-      <p>Enter one child's details to create a scannable health-information QR code.</p>
-      <section id="expiry-reminders" aria-live="polite"></section>
-
-      <div id="entry-form">
-        <label for="childname">Child's name</label>
-        <input id="text" name="name" maxlength="100" required>
-
-         
-
-        
-
-        <label for="age">Age</label>
-        <input id="text1" name="age" type="number" min="0" max="100" >
-
-        <label for="dietary">dietary restrictions</label>
-        <input id="text4" name="dr" type="text">
-
-        <label for="allergies">Allergies</label>
-        <textarea id="text2" name="allergies" maxlength="500"></textarea>
-
-        <label for="Medicine/OTC">Medicine instructions (as advised by a healthcare professional)</label>
-        <textarea id="text3" name="Medicine" maxlength="500"></textarea>
-
-        <label for="emergencycontact">Emergency contact</label>
-        <input id="text5" name="emergency_contact" maxlength="120">
-
-        <label for="preferred-hospital">Preferred hospital</label>
-        <input id="text6" name="preferred_hospital" maxlength="120">
-
-        <button type="button" onclick="generateQR()">Create health card</button>
-        <p id="form-error" role="alert"></p>
-
-        <div id="qrcode" style="margin-top:20px;"></div>
+    <dialog id="share-sheet" aria-labelledby="share-title">
+      <div class="sheet-header">
+        <h2 id="share-title">Share</h2>
+        <button type="button" class="close-button" onclick="closeShareSheet()" aria-label="Close">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>
+          </svg>
+        </button>
       </div>
 
-        <button type="button" id="share-button" onclick="openShareSheet()" hidden>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9V5l7 7-7 7v-4.1c-5 0-8.5 1.6-11 5.1 1-5 4-10 11-11z"/></svg>
-          Share
+      <div class="share-apps">
+        <a id="share-whatsapp" class="share-app" target="_blank" rel="noopener">
+          <span class="share-icon" style="background:#25d366">WA</span>
+          WhatsApp
+        </a>
+
+        <a id="share-messages" class="share-app">
+          <span class="share-icon" style="background:#34c759">SMS</span>
+          Messages
+        </a>
+
+        <a id="share-email" class="share-app">
+          <span class="share-icon" style="background:#5f6368">✉</span>
+          Email
+        </a>
+
+        <button type="button" id="share-more" class="share-app" onclick="shareLink()" hidden>
+          <span class="share-icon" style="background:#e8eaed;color:#3c4043">•••</span>
+          More
         </button>
-
-        <dialog id="share-sheet" aria-labelledby="share-title">
-          <div class="sheet-header">
-            <h2 id="share-title">Share</h2>
-            <button type="button" class="close-button" onclick="closeShareSheet()" aria-label="Close">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg>
-            </button>
-          </div>
-
-          <div class="share-apps">
-            <a id="share-whatsapp" class="share-app" target="_blank" rel="noopener">
-              <span class="share-icon" style="background:#25d366">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.2.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.2 5.1 5.1 0 0 0 1 2.7 11.7 11.7 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3z"/></svg>
-              </span>
-              WhatsApp
-            </a>
-            <a id="share-messages" class="share-app">
-              <span class="share-icon" style="background:#34c759">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.5 3 2 6.8 2 11.5c0 2.6 1.4 5 3.7 6.5L5 21l3.6-1.9c1.1.3 2.2.4 3.4.4 5.5 0 10-3.8 10-8.5S17.5 3 12 3z"/></svg>
-              </span>
-              Messages
-            </a>
-            <a id="share-email" class="share-app">
-              <span class="share-icon" style="background:#5f6368">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg>
-              </span>
-              Email
-            </a>
-            <button type="button" id="share-more" class="share-app" onclick="shareLink()" hidden>
-              <span class="share-icon" style="background:#e8eaed;color:#3c4043">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
-              </span>
-              More
-            </button>
-          </div>
+      </div>
 
           <div class="link-box">
             <input id="share-link" type="text" readonly aria-label="Health card link">
@@ -370,17 +382,185 @@
           <p id="share-status" role="status"></p>
         </dialog>
 
-        <div id="qrData" style="margin-top:20px;"></div>
-      
+    <div id="qrData" style="margin-top:20px;"></div>
 
-      <section id="health-card" aria-live="polite" hidden>
-        <h2 id="card-title">Medical information</h2>
-        <div id="card-details"></div>
-        <p id="qr-status" role="status"></p>
-        <p>Anyone who scans this code can read the health details it contains.</p>
-      </section>
-                
-    </main>
-    
-    
-    
+    <section id="health-card" aria-live="polite" hidden>
+      <h2 id="card-title">Medical information</h2>
+      <div id="card-details"></div>
+      <p id="qr-status" role="status"></p>
+      <p>Anyone who scans this code can read the health details it contains.</p>
+    </section>
+  </main>
+
+  <script>
+    let currentShareLink = "";
+
+    function getCardData() {
+      return {
+        name: document.getElementById("text").value.trim(),
+        age: document.getElementById("text1").value.trim(),
+        dietary: document.getElementById("text4").value.trim(),
+        allergies: document.getElementById("text2").value.trim(),
+        medicine: document.getElementById("text3").value.trim(),
+        emergency: document.getElementById("text5").value.trim(),
+        hospital: document.getElementById("text6").value.trim()
+      };
+    }
+
+    function showCard(data) {
+      const details = document.getElementById("card-details");
+      details.replaceChildren();
+
+      const fields = [
+        ["Name", data.name],
+        ["Age", data.age],
+        ["Dietary restrictions", data.dietary],
+        ["Allergies", data.allergies],
+        ["Medicine instructions", data.medicine],
+        ["Emergency contact", data.emergency],
+        ["Preferred hospital", data.hospital]
+      ];
+
+      for (const [label, value] of fields) {
+        if (!value) continue;
+        const paragraph = document.createElement("p");
+        const strong = document.createElement("strong");
+        strong.textContent = label + ": ";
+        paragraph.append(strong, document.createTextNode(value));
+        details.appendChild(paragraph);
+      }
+
+      document.getElementById("health-card").hidden = false;
+    }
+
+    function generateQR() {
+      const error = document.getElementById("form-error");
+      const data = getCardData();
+
+      error.textContent = "";
+
+      if (!data.name) {
+        error.textContent = "Please enter the child's name.";
+        document.getElementById("text").focus();
+        return;
+      }
+
+      if (typeof QRCode === "undefined") {
+        error.textContent = "The QR-code library did not load. Check your internet connection and try again.";
+        return;
+      }
+
+      const qrContainer = document.getElementById("qrcode");
+      qrContainer.replaceChildren();
+
+      const payload = encodeURIComponent(JSON.stringify(data));
+      const baseUrl = window.location.href.split("#")[0];
+      currentShareLink = baseUrl + "#card=" + payload;
+
+      new QRCode(qrContainer, {
+        text: currentShareLink,
+        width: 220,
+        height: 220,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      showCard(data);
+      document.getElementById("share-button").hidden = false;
+      document.getElementById("qr-status").textContent =
+        "QR code created. Scan it to open this health card.";
+    }
+
+    function openShareSheet() {
+      if (!currentShareLink) return;
+
+      const link = document.getElementById("share-link");
+      const message = "Child health card: " + currentShareLink;
+
+      link.value = currentShareLink;
+      document.getElementById("share-whatsapp").href =
+        "https://wa.me/?text=" + encodeURIComponent(message);
+      document.getElementById("share-messages").href =
+        "sms:?body=" + encodeURIComponent(message);
+      document.getElementById("share-email").href =
+        "mailto:?subject=" + encodeURIComponent("Child health card") +
+        "&body=" + encodeURIComponent(message);
+
+      const dialog = document.getElementById("share-sheet");
+      if (typeof dialog.showModal === "function") {
+        dialog.showModal();
+      } else {
+        dialog.setAttribute("open", "");
+      }
+    }
+
+    function closeShareSheet() {
+      const dialog = document.getElementById("share-sheet");
+      if (typeof dialog.close === "function") {
+        dialog.close();
+      } else {
+        dialog.removeAttribute("open");
+      }
+    }
+
+    async function copyShareLink() {
+      const link = document.getElementById("share-link");
+      const status = document.getElementById("share-status");
+
+      if (!link.value) {
+        status.textContent = "Create a health card first.";
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(link.value);
+      } catch {
+        link.focus();
+        link.select();
+        document.execCommand("copy");
+      }
+
+      status.textContent = "Link copied.";
+    }
+
+    async function shareLink() {
+      if (!currentShareLink) return;
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "Child health card",
+            url: currentShareLink
+          });
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            document.getElementById("share-status").textContent =
+              "Unable to share this link.";
+          }
+        }
+      } else {
+        await copyShareLink();
+      }
+    }
+
+    function loadScannedCard() {
+      const match = window.location.hash.match(/^#card=(.*)$/);
+      if (!match) return;
+
+      try {
+        const data = JSON.parse(decodeURIComponent(match[1]));
+        if (!data || typeof data !== "object" || !data.name) return;
+
+        document.body.classList.add("scanned-view");
+        document.getElementById("health-card").hidden = false;
+        showCard(data);
+      } catch {
+        document.getElementById("qr-status").textContent =
+          "This health-card link is invalid or incomplete.";
+        document.getElementById("health-card").hidden = false;
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", loadScannedCard);
+  </script>
+</body>
+</html>
