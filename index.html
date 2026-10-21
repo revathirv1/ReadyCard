@@ -364,14 +364,8 @@
           </div>
 
           <div class="link-box">
-            <input
-                  id="text5"
-                  name="emergency_contact"
-                  type="tel"
-                  minlength="10"
-                  maxlength="10"
-                  pattern="[0-9]{10}"
-                  title="Enter exactly 10 digits"
+            <input id="share-link" type="text" readonly aria-label="Health card link">
+            <button type="button" onclick="copyLink()">Copy</button>
           </div>
           <p id="share-status" role="status"></p>
         </dialog>
