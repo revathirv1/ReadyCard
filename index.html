@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Child Health Card</title>
+  <title>ReadyCard</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 
@@ -304,7 +304,7 @@
 
 <body>
   <main>
-    <h1>Child Health Card</h1>
+    <h1>ReadyCard</h1>
     <p>Enter one child's details to create a scannable health-information QR code.</p>
 
     <section id="expiry-reminders" aria-live="polite"></section>
@@ -474,7 +474,7 @@
       if (!currentShareLink) return;
 
       const link = document.getElementById("share-link");
-      const message = "Child health card: " + currentShareLink;
+      const message = "ReadyCard: " + currentShareLink;
 
       link.value = currentShareLink;
       document.getElementById("share-whatsapp").href =
@@ -482,7 +482,7 @@
       document.getElementById("share-messages").href =
         "sms:?body=" + encodeURIComponent(message);
       document.getElementById("share-email").href =
-        "mailto:?subject=" + encodeURIComponent("Child health card") +
+        "mailto:?subject=" + encodeURIComponent("ReadyCard") +
         "&body=" + encodeURIComponent(message);
 
       const dialog = document.getElementById("share-sheet");
@@ -528,7 +528,7 @@
       if (navigator.share) {
         try {
           await navigator.share({
-            title: "Child health card",
+            title: "ReadyCard",
             url: currentShareLink
           });
         } catch (error) {
