@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -236,8 +237,7 @@
       margin: 12px 0;
     }
 
-    body.scanned-view main > p,
-    body.scanned-view #expiry-reminders,
+    body.scanned-view main>p,
     body.scanned-view #entry-form,
     body.scanned-view #share-button,
     body.scanned-view #share-sheet,
@@ -260,13 +260,6 @@
       display: block;
       max-width: 100%;
       height: auto;
-    }
-
-    #expiry-reminders {
-      max-width: 100%;
-      padding: 12px 16px;
-      border-radius: 12px;
-      background: #fff4d6;
     }
 
     .visually-hidden {
@@ -307,8 +300,6 @@
     <h1>ReadyCard</h1>
     <p>Enter one child's details to create a scannable health-information QR code.</p>
 
-    <section id="expiry-reminders" aria-live="polite"></section>
-
     <div id="entry-form">
       <label for="text">Child's name</label>
       <input id="text" name="name" type="text" maxlength="100" required>
@@ -338,7 +329,7 @@
 
     <button type="button" id="share-button" onclick="openShareSheet()" hidden>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M14 9V5l7 7-7 7v-4.1c-5 0-8.5 1.6-11 5.1 1-5 4-10 11-11z"/>
+        <path d="M14 9V5l7 7-7 7v-4.1c-5 0-8.5 1.6-11 5.1 1-5 4-10 11-11z" />
       </svg>
       Share
     </button>
@@ -348,7 +339,7 @@
         <h2 id="share-title">Share</h2>
         <button type="button" class="close-button" onclick="closeShareSheet()" aria-label="Close">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>
+            <path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z" />
           </svg>
         </button>
       </div>
@@ -375,12 +366,12 @@
         </button>
       </div>
 
-          <div class="link-box">
-            <input id="share-link" type="text" readonly aria-label="Health card link">
-            <button type="button" onclick="copyLink()">Copy</button>
-          </div>
-          <p id="share-status" role="status"></p>
-        </dialog>
+      <div class="link-box">
+        <input id="share-link" type="text" readonly aria-label="Health card link">
+        <button type="button" onclick="copyLink()">Copy</button>
+      </div>
+      <p id="share-status" role="status"></p>
+    </dialog>
 
     <div id="qrData" style="margin-top:20px;"></div>
 
@@ -563,4 +554,5 @@
     window.addEventListener("DOMContentLoaded", loadScannedCard);
   </script>
 </body>
+
 </html>
